@@ -1,5 +1,3 @@
-from re import I
-from matplotlib.style import use
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -45,7 +43,7 @@ def get_bret(rluc, eyfp):
     for i in range(1,6):
         avg_bret_ratio = avg_bret_ratio.add(bret_ratio[i])
     avg_bret_ratio = avg_bret_ratio.divide(6) 
-    
+
     return bret, corrected_bret, bret_ratio, avg_bret_ratio
 
 def plot_abs_graph(bret_ratio, avg_bret_ratio):
