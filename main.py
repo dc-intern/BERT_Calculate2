@@ -9,6 +9,7 @@ import math
 import io
 
 # get rluc and eyfp from the file 
+@st.cache
 def readfile(file):
     rluc = {0:{}}
     eyfp = {0:{}}
@@ -50,6 +51,7 @@ def readfile(file):
     
     return rluc, eyfp, table2_exist, table3_exist 
 
+@st.cache
 # calculate bret
 def get_bret(rluc, eyfp):
     bret = {}
