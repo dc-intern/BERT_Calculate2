@@ -143,6 +143,9 @@ def generate_download_button(fig):
         mime="image/pdf"
     )
 
+
+
+
 # streamlit start ########################
 st.set_page_config(page_title="BRET Calculator", layout="centered")
 st.title("BRET Calculator")
