@@ -128,7 +128,7 @@ def plot_relative_graph(bret, ref_pt, xlabel):
 
     return fig
 
-def generate_download_button(fig):
+def generate_download_button(fig, key):
     # save grpah for download
     img = io.BytesIO()
     pp = PdfPages(img)
@@ -140,7 +140,8 @@ def generate_download_button(fig):
         label="Download graph as PDF",
         data=img,
         file_name="BERT_result.pdf",
-        mime="image/pdf"
+        mime="image/pdf",
+        key=key
     )
 
 # streamlit start ########################
@@ -175,20 +176,44 @@ with st.sidebar:
     if (table3_exist):
         xlabel[2] = st.text_input('X Label 3', 'X Axis')
 
+tab = ['col 4-6']
+if table2_exist:
+    tab.append('col 7-9')
+if table3_exist:
+    tab.append('col 10-12')
+
+tabs = st.tabs(tab)
+
 # plot and save graph
 if method == 'Absolute':
-    for i in range(3):
-        if ((i == 1 and not table2_exist) or (i == 2 and not table3_exist)):
-            continue
-        fig = plot_abs_graph(bret_ratio[i], avg_bret_ratio[i], xlabel[i])
+    fig = plot_abs_graph(bret_ratio[0], avg_bret_ratio[0], xlabel[0])
+    with tabs[0]:
         st.pyplot(fig)
-        generate_download_button(fig)
+        generate_download_button(fig, 0)
 
+    if (table2_exist):
+        fig = plot_abs_graph(bret_ratio[1], avg_bret_ratio[1], xlabel[1])
+        with tabs[1]:
+            st.pyplot(fig)
+            generate_download_button(fig, 1)
+
+    if (table3_exist):
+        fig = plot_abs_graph(bret_ratio[2], avg_bret_ratio[2], xlabel[2])
+        i = 2
+        if (not table2_exist): i -= 1
+        with tabs[i]:
+            st.pyplot(fig)
+            generate_download_button(fig, 2)
+
+    
 elif method == 'Relative':
     for i in range(3):
         if ((i == 1 and not table2_exist) or (i == 2 and not table3_exist)):
             continue
         fig = plot_relative_graph(bret[i], avg_bret_ratio[i][0], xlabel[i])
-        st.pyplot(fig)
-        generate_download_button(fig)
+        temp = i 
+        if (i == 2 and not table2_exist): temp -= 1
+        with tabs[temp]:
+            st.pyplot(fig)
+            generate_download_button(fig, i)
 
